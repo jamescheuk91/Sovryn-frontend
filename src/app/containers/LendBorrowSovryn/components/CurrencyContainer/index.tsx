@@ -29,6 +29,7 @@ const currencyRows = [
 ];
 
 const CurrencyContainer: React.FC<Props> = ({ state, setState }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [amount, setAmount] = useState<string>('');
 
   const getAsset = (asset: string) => {
@@ -51,7 +52,11 @@ const CurrencyContainer: React.FC<Props> = ({ state, setState }) => {
         >
           {currencyRows.map(info => {
             return (
-              <Nav.Link key={info.title} eventKey={info.title}>
+              <Nav.Link
+                key={info.title}
+                eventKey={info.title}
+                className="currency-row-link"
+              >
                 <CurrencyRow
                   {...info}
                   state={state}

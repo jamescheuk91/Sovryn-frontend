@@ -22,7 +22,7 @@ type Props = {
   amountValue: string;
   leftButton: string;
   rightButton: string;
-  onChangeAmount: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeAmount: (value: string) => void;
   onMaxChange: (max: string) => void;
   setBorrowAmount?: (amount: string) => void;
   handleSubmit: (e: any) => void;
@@ -55,7 +55,7 @@ const TabContainer: React.FC<Props> = ({
 }) => {
   const [currentButton, setCurrentButton] = useState(leftButton);
   return (
-    <div className="tabs-container">
+    <>
       <ButtonGroup
         setCurrentButton={setCurrentButton}
         setBorrowAmount={setBorrowAmount}
@@ -66,7 +66,7 @@ const TabContainer: React.FC<Props> = ({
       <Amount
         amountValue={amountValue}
         onChangeAmount={onChangeAmount}
-        onMaxChange={onMaxChange}
+        onMaxChange={() => onMaxChange(currentButton)}
         currency={currency}
         amountName={amountName}
         maxValue={maxValue}
@@ -80,7 +80,7 @@ const TabContainer: React.FC<Props> = ({
         handleSubmitWithdraw={handleSubmitWithdraw}
         currency={currency}
       />
-    </div>
+    </>
   );
 };
 

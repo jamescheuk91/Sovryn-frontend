@@ -1,20 +1,16 @@
-import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 
 import { useAssetBalanceOf } from '../../../hooks/useAssetBalanceOf';
 import { useIsConnected } from '../../../hooks/useAccount';
-import { Asset } from '../../../../types/asset';
 import { useWeiAmount } from '../../../hooks/useWeiAmount';
-import { useTokenAllowance } from '../../../hooks/useTokenAllowanceForLending';
 import { useSelector } from 'react-redux';
 import { selectTradingPage } from '../../TradingPage/selectors';
 import { TradingPairDictionary } from '../../../../utils/trading-pair-dictionary';
-import { useTranslation } from 'react-i18next';
 import { TradingPosition } from '../../../../types/trading-position';
 import { useApproveAndBorrow } from '../../../hooks/trading/useApproveAndBorrow';
 import { useIsAmountWithinLimits } from '../../../hooks/useIsAmountWithinLimits';
 import TabContainer, { TxType } from '../components/TabContainer';
 import { TransactionStatus } from '../../../../types/transaction-status';
-import { getLendingContract } from '../../../../utils/blockchain/contract-helpers';
 import '../assets/index.scss';
 
 type Props = {
@@ -26,8 +22,8 @@ const BorrowingContainer: React.FC<Props> = ({ currency }) => {
   const isConnected = useIsConnected();
   const weiAmount = useWeiAmount(amount);
 
-  const onChangeAmount = (e: ChangeEvent<HTMLInputElement>) => {
-    setAmount(e.target.value as string);
+  const onChangeAmount = (value: string) => {
+    setAmount(value);
   };
 
   const onMaxChange = (max: string) => {

@@ -14,7 +14,7 @@ interface Props {
   type?: 'button' | 'reset' | 'submit';
   disabled?: boolean;
   loading?: boolean;
-  onClick: () => void;
+  onClick: (e: any) => void;
 }
 
 export function TradeButton(props: Props) {
@@ -24,7 +24,7 @@ export function TradeButton(props: Props) {
       disabled={props.disabled}
       className="sovryn-border"
       textColor={props.textColor}
-      onClick={() => props.onClick()}
+      onClick={props.onClick}
     >
       <Text
         ellipsize

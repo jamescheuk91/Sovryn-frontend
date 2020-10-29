@@ -34,8 +34,8 @@ const LendingContainer: React.FC<Props> = ({ currency }) => {
     getLendingContract(asset).address,
   );
 
-  const onChangeAmount = (e: ChangeEvent<HTMLInputElement>) => {
-    setAmount(e.target.value as string);
+  const onChangeAmount = (value: string) => {
+    setAmount(value);
   };
 
   const onMaxChange = (max: string) => {

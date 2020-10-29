@@ -5,7 +5,7 @@ import '../../assets/index.scss';
 import { AssetWalletBalance } from '../../../../components/AssetWalletBalance';
 import { Asset } from '../../../../../types/asset';
 import { SendTxProgress } from '../../../../components/SendTxProgress';
-import { TxType } from '../TabContainer';
+import { TradeButton } from '../../../../components/TradeButton';
 
 type Props = {
   currency: string;
@@ -29,28 +29,31 @@ const AccountBalance: React.FC<Props> = ({
   let asset = currency === 'BTC' ? Asset.BTC : Asset.DOC;
 
   return (
-    <div
-      className={clsx(
-        'account-balance-container',
-        currency === 'DOC' && 'account-balance-container__green',
-      )}
-    >
-      <AssetWalletBalance asset={asset} />
-      <button
-        onClick={title === 'Withdraw' ? handleSubmitWithdraw : handleSubmit}
-        disabled={txState.loading || !isConnected || !valid}
+    <>
+      <SendTxProgress
+        {...txState}
+        type={txState.type}
+        displayAbsolute={false}
+      />
+      <div
+        className={clsx(
+          'account-balance-container position-relative',
+          currency === 'DOC' && 'account-balance-container__green',
+        )}
       >
-        {title} {currency}
-      </button>
-      {txState.type !== TxType.NONE && (
-        <SendTxProgress
-          status={txState.status}
-          txHash={txState.txHash}
+        <AssetWalletBalance asset={asset} />
+        <TradeButton
+          text={`${title} ${currency}`}
+          onClick={
+            title === 'Withdraw' && handleSubmitWithdraw
+              ? handleSubmitWithdraw
+              : handleSubmit
+          }
+          disabled={txState.loading || !isConnected || !valid}
           loading={txState.loading}
-          type={txState.type}
         />
-      )}
-    </div>
+      </div>
+    </>
   );
 };
 
