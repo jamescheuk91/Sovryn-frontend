@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import '../../assets/index.scss';
 import { FieldGroup } from '../../../../components/FieldGroup';
 import { AmountField } from '../../../AmountField';
@@ -6,8 +6,9 @@ import { AmountField } from '../../../AmountField';
 type Props = {
   amountName: string;
   amountValue: string;
-  onChangeAmount: (value: string) => void;
+  onChangeAmount: (e: string) => void;
   onMaxChange: () => void;
+
   currency: string;
   minValue?: number | string;
   maxValue?: number | string;

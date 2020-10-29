@@ -1,9 +1,9 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { useState } from 'react';
 import { Container, Nav, Tab } from 'react-bootstrap';
 import '../../assets/index.scss';
 
-import btcIcon from '../../assets/img/bitcoin.png';
-import docIcon from '../../assets/img/icon.svg';
+import btcIcon from 'assets/images/btc-logo.svg';
+import docIcon from 'assets/images/dollar-sign.svg';
 import CurrencyRow from './CurrencyRow';
 import { Asset } from '../../../../../types/asset';
 import { useWeiAmount } from '../../../../hooks/useWeiAmount';
@@ -35,11 +35,6 @@ const CurrencyContainer: React.FC<Props> = ({ state, setState }) => {
   const getAsset = (asset: string) => {
     return asset === 'BTC' ? Asset.BTC : Asset.DOC;
   };
-
-  const onChangeAmount = (e: ChangeEvent<HTMLInputElement>) => {
-    setAmount(e.target.value as string);
-  };
-
   const weiAmount = useWeiAmount(amount);
 
   return (
