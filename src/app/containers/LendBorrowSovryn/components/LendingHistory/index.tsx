@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Collapse, Table } from 'react-bootstrap';
 import { EventData } from 'web3-eth-contract';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Tooltip } from '@blueprintjs/core';
 import ArrowDown from '../../assets/img/arrow-down.svg';
 import ArrowUp from '../../assets/img/arrow-up.svg';
@@ -12,6 +13,7 @@ import { weiToFixed } from '../../../../../utils/blockchain/math-helpers';
 import { prettyTx } from '../../../../../utils/helpers';
 
 import '../../assets/index.scss';
+import clsx from 'clsx';
 
 type Props = {};
 
@@ -32,6 +34,7 @@ const LendingHistory: React.FC<Props> = props => {
   } = useGetContractPastEvents(contract, 'Burn');
 
   const [events, setEvents] = useState<EventData[]>([]);
+  const [copied, setCopied] = useState<string>('');
 
   useEffect(() => {
     if (account) {
@@ -56,6 +59,22 @@ const LendingHistory: React.FC<Props> = props => {
     setOpen(false);
   };
 
+  useEffect(() => {
+    let time;
+    if (copied) {
+      time = setTimeout(() => {
+        setCopied('');
+      }, 1500);
+    }
+    return () => clearTimeout(time);
+  }, [copied]);
+
+  const onCopied = (text: string) => {
+    if (text.length) {
+      setCopied(text);
+    }
+  };
+
   return (
     <div className="lending-history-container">
       <div className="lending-history">
@@ -76,7 +95,7 @@ const LendingHistory: React.FC<Props> = props => {
             <Table responsive="sm">
               <thead>
                 <tr className="cell">
-                  <th>Land amount</th>
+                  <th>Lend amount</th>
                   <th>Date &amp; time</th>
                   <th>Price</th>
                   <th>Transaction</th>
@@ -84,15 +103,26 @@ const LendingHistory: React.FC<Props> = props => {
               </thead>
               <tbody>
                 {events.map((event, index) => (
-                  <tr className="cell">
+                  <tr
+                    key={index}
+                    className={clsx(
+                      'cell',
+                      event.event === 'Mint' ? 'cell__green' : 'cell__red',
+                    )}
+                  >
                     <td>{weiToFixed(event.returnValues.assetAmount, 8)}</td>
                     <td>&mdash;</td>
-                    <td>${weiToFixed(event.returnValues.price, 3)}</td>
-                    <td>
-                      <Tooltip content={<> {event.transactionHash}</>}>
-                        {prettyTx(event.transactionHash)}
-                      </Tooltip>
-                    </td>
+                    <td>${weiToFixed(event.returnValues.price, 5)}</td>
+                    <CopyToClipboard
+                      text={event.transactionHash}
+                      onCopy={() => onCopied(event.transactionHash)}
+                    >
+                      <td>
+                        <Tooltip content={<> {event.transactionHash}</>}>
+                          {prettyTx(event.transactionHash)}
+                        </Tooltip>
+                      </td>
+                    </CopyToClipboard>
                   </tr>
                 ))}
               </tbody>
@@ -100,6 +130,11 @@ const LendingHistory: React.FC<Props> = props => {
           </div>
         )}
       </Collapse>
+      {copied && (
+        <div className="alert-position alert alert-success">
+          Copied: {copied.slice(0, 14)}...
+        </div>
+      )}
     </div>
   );
 };

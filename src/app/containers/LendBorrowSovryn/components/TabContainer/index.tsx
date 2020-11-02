@@ -5,9 +5,19 @@ import AccountBalance from '../AccountBalance';
 import { TransactionStatus } from '../../../../../types/transaction-status';
 
 import '../../assets/index.scss';
+import { Asset } from '../../../../../types/asset';
+
+export enum TxType {
+  NONE = 'none',
+  APPROVE = 'approve',
+  LEND = 'lend',
+  WITHDRAW = 'withdraw',
+  BORROW = 'borrow',
+  CLOSE_WITH_DEPOSIT = 'closeWithDeposit',
+}
 
 type Props = {
-  currency: string;
+  currency: Asset;
   amountName: string;
   maxValue: string;
   minValue?: string;
@@ -18,10 +28,13 @@ type Props = {
   onMaxChange: (button: string) => void;
   handleSubmit: () => void;
   handleSubmitWithdraw?: () => void;
+  setBorrowAmount?: (amount: string) => void;
+  handleSubmitRepay?: () => void;
   isConnected: boolean;
   valid: boolean;
   txState: {
-    txHash: string;
+    type: TxType;
+    txHash: any;
     status: TransactionStatus;
     loading: boolean;
   };
@@ -36,18 +49,21 @@ const TabContainer: React.FC<Props> = ({
   onChangeAmount,
   handleSubmit,
   handleSubmitWithdraw,
+  handleSubmitRepay,
   leftButton,
   rightButton,
   isConnected,
   valid,
   txState,
   onMaxChange,
+  setBorrowAmount,
 }) => {
   const [currentButton, setCurrentButton] = useState(leftButton);
   return (
     <>
       <ButtonGroup
         setCurrentButton={setCurrentButton}
+        setBorrowAmount={setBorrowAmount}
         currency={currency}
         leftButton={leftButton}
         rightButton={rightButton}
@@ -67,6 +83,7 @@ const TabContainer: React.FC<Props> = ({
         isConnected={isConnected}
         handleSubmit={handleSubmit}
         handleSubmitWithdraw={handleSubmitWithdraw}
+        handleSubmitRepay={handleSubmitRepay}
         currency={currency}
       />
     </>

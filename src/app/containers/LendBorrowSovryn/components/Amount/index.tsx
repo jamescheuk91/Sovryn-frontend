@@ -34,7 +34,7 @@ const Amount: React.FC<Props> = ({
           />
         </FieldGroup>
       </div>
-      {maxValue !== '0' && (
+      {maxValue !== '0' && maxValue !== '' && (
         <div className="d-flex flex-column min-max-btc p-3 align-items-center justify-content-center">
           <div>Max:</div>
           <div>
