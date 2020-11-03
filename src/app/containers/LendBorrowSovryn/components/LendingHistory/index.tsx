@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Collapse, Table } from 'react-bootstrap';
 import { EventData } from 'web3-eth-contract';
+import clsx from 'clsx';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Tooltip } from '@blueprintjs/core';
+import { Sovryn } from '../../../../../utils/sovryn';
 import ArrowDown from '../../assets/img/arrow-down.svg';
 import ArrowUp from '../../assets/img/arrow-up.svg';
 import { useAccount } from '../../../../hooks/useAccount';
@@ -13,9 +15,20 @@ import { weiToFixed } from '../../../../../utils/blockchain/math-helpers';
 import { prettyTx } from '../../../../../utils/helpers';
 
 import '../../assets/index.scss';
-import clsx from 'clsx';
 
 type Props = {};
+
+type LendingHistoryType = {
+  event: string;
+  lendAmount: string;
+  date: string;
+  price: string;
+  transactionHash: string;
+};
+
+const web3 = Sovryn.getWeb3();
+
+// const block =  call(web3.eth.getBlock, blockNumber, true);
 
 const LendingHistory: React.FC<Props> = props => {
   const [open, setOpen] = useState(false);
@@ -34,6 +47,7 @@ const LendingHistory: React.FC<Props> = props => {
   } = useGetContractPastEvents(contract, 'Burn');
 
   const [events, setEvents] = useState<EventData[]>([]);
+  const [data, setData] = useState<Array<LendingHistoryType>>([]);
   const [copied, setCopied] = useState<string>('');
 
   useEffect(() => {
@@ -75,6 +89,24 @@ const LendingHistory: React.FC<Props> = props => {
     }
   };
 
+  Promise.all(
+    events.map(async i => {
+      const { timestamp } = await web3.eth.getBlock(i.blockNumber);
+      return {
+        event: i.event,
+        lendAmount: weiToFixed(i.returnValues.assetAmount, 8),
+        // @ts-ignore
+        date: new Date(timestamp * 1000).toLocaleString(), // get milliseconds
+        price: weiToFixed(i.returnValues.price, 5),
+        transactionHash: i.transactionHash,
+      };
+    }),
+  ).then(d => {
+    if (d.length && !data.length) {
+      setData(d);
+    }
+  });
+
   return (
     <div className="lending-history-container">
       <div className="lending-history">
@@ -88,7 +120,7 @@ const LendingHistory: React.FC<Props> = props => {
         </div>
       </div>
       <Collapse in={open}>
-        {!events.length ? (
+        {!data.length ? (
           <div className="empty-history">History is empty.</div>
         ) : (
           <div id="example-collapse-text">
@@ -102,29 +134,31 @@ const LendingHistory: React.FC<Props> = props => {
                 </tr>
               </thead>
               <tbody>
-                {events.map((event, index) => (
-                  <tr
-                    key={index}
-                    className={clsx(
-                      'cell',
-                      event.event === 'Mint' ? 'cell__green' : 'cell__red',
-                    )}
-                  >
-                    <td>{weiToFixed(event.returnValues.assetAmount, 8)}</td>
-                    <td>&mdash;</td>
-                    <td>${weiToFixed(event.returnValues.price, 5)}</td>
-                    <CopyToClipboard
-                      text={event.transactionHash}
-                      onCopy={() => onCopied(event.transactionHash)}
+                {data.map(
+                  ({ event, lendAmount, date, price, transactionHash }) => (
+                    <tr
+                      key={transactionHash}
+                      className={clsx(
+                        'cell',
+                        event === 'Mint' ? 'cell__green' : 'cell__red',
+                      )}
                     >
-                      <td>
-                        <Tooltip content={<> {event.transactionHash}</>}>
-                          {prettyTx(event.transactionHash)}
-                        </Tooltip>
-                      </td>
-                    </CopyToClipboard>
-                  </tr>
-                ))}
+                      <td>{lendAmount}</td>
+                      <td>{date}</td>
+                      <td>{price}</td>
+                      <CopyToClipboard
+                        text={transactionHash}
+                        onCopy={() => onCopied(transactionHash)}
+                      >
+                        <td>
+                          <Tooltip content={<> {transactionHash}</>}>
+                            {prettyTx(transactionHash)}
+                          </Tooltip>
+                        </td>
+                      </CopyToClipboard>
+                    </tr>
+                  ),
+                )}
               </tbody>
             </Table>
           </div>
