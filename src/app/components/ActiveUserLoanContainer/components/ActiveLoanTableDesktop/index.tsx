@@ -30,20 +30,22 @@ export function ActiveLoanTableDesktop(props: Props) {
         Header: 'Current Margin',
         accessor: 'currentMargin',
         sortType: 'alphanumeric',
-        sortable: true,
+        sortable: false,
       },
       {
         Header: 'Interest APR',
         accessor: 'interestAPR',
+        sortable: false,
       },
       {
         Header: 'Start Price',
         accessor: 'startPrice',
+        sortable: false,
       },
       {
         Header: 'Profit / Loss',
         accessor: 'profit',
-        sortable: true,
+        sortable: false,
       },
       {
         Header: '',
@@ -67,7 +69,11 @@ export function ActiveLoanTableDesktop(props: Props) {
           {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map(column => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                <th
+                  {...column.getHeaderProps(
+                    column.sortable && column.getSortByToggleProps(),
+                  )}
+                >
                   <Text ellipsize tagName="span">
                     {column.render('Header')}
                     {column.sortable && (
