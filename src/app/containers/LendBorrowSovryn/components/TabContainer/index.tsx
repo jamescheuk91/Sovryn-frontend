@@ -59,6 +59,7 @@ const TabContainer: React.FC<Props> = ({
   setBorrowAmount,
 }) => {
   const [currentButton, setCurrentButton] = useState(leftButton);
+  console.log('maxValuemaxValuemaxValue', maxValue);
   return (
     <>
       <ButtonGroup

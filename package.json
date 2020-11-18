@@ -38,7 +38,7 @@
     "babel-plugin-named-asset-import": "^0.3.6",
     "babel-preset-react-app": "^9.1.2",
     "blockies-ts": "1.0.0",
-    "bootstrap": "4.5.2",
+    "bootstrap": "4.5.3",
     "camelcase": "^5.3.1",
     "case-sensitive-paths-webpack-plugin": "2.3.0",
     "clsx": "1.1.1",
@@ -83,6 +83,7 @@
     "optimize-css-assets-webpack-plugin": "5.0.3",
     "plop": "2.6.0",
     "pnp-webpack-plugin": "1.6.4",
+    "popper.js": "1.16.1",
     "postcss-flexbugs-fixes": "4.1.0",
     "postcss-loader": "3.0.0",
     "postcss-normalize": "8.0.1",
@@ -116,6 +117,7 @@
     "serve": "11.3.0",
     "shelljs": "0.8.3",
     "socket.io-client": "2.3.1",
+    "source-map-explorer": "2.5.0",
     "style-loader": "0.23.1",
     "styled-components": "5.1.1",
     "stylelint": "13.2.1",
@@ -150,7 +152,8 @@
     "lint:fix": "yarn eslint -- --fix src",
     "lint:css": "stylelint src/**/*.css",
     "generate": "cross-env TS_NODE_PROJECT='./internals/ts-node.tsconfig.json' plop --plopfile internals/generators/plopfile.ts",
-    "prettify": "prettier --write"
+    "prettify": "prettier --write",
+    "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
   "browserslist": {
     "production": [

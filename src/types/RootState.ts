@@ -1,6 +1,8 @@
 import { WalletProviderState } from 'app/containers/WalletProvider/types';
 import { TradingPageState } from 'app/containers/TradingPage/types';
 import { FastBtcFormState } from 'app/containers/FastBtcForm/types';
+import { LendBorrowSovrynState } from 'app/containers/LendBorrowSovryn/types';
+import { EventsStoreState } from '../store/global/events-store/types';
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
 /*
@@ -11,5 +13,7 @@ export interface RootState {
   walletProvider?: WalletProviderState;
   tradingPage?: TradingPageState;
   fastBtcForm?: FastBtcFormState;
+  lendBorrowSovryn?: LendBorrowSovrynState;
+  eventsState?: EventsStoreState;
   // [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }

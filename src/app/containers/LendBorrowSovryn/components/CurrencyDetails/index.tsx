@@ -1,31 +1,33 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Tab, Tabs } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { Asset } from '../../../../../types/asset';
 import LendingContainer from '../../LendingContainer';
 import BorrowingContainer from '../../BorrowingContainer';
 import '../../assets/index.scss';
+import { selectLendBorrowSovryn } from '../../selectors';
+import { actions } from '../../slice';
+import { TabType } from '../../types';
 
-type Props = {
-  currency: Asset;
-};
+type Props = {};
 
-const CurrencyDetails: React.FC<Props> = ({ currency }) => {
-  const [key, setKey] = useState<string | null>('lend');
+const CurrencyDetails: React.FC<Props> = () => {
+  const { tab, asset } = useSelector(selectLendBorrowSovryn);
+  const dispatch = useDispatch();
 
   return (
     <div className="sovryn-tabs">
       <Tabs
-        activeKey={key}
-        onSelect={k => setKey(k as string)}
+        activeKey={tab}
+        onSelect={k => dispatch(actions.changeTab((k as unknown) as TabType))}
         defaultActiveKey="lend"
         id="borrow-&-lend-tabs"
       >
-        <Tab eventKey="lend" title="LEND">
-          <LendingContainer currency={currency} />
+        <Tab eventKey={TabType.LEND} title="LEND">
+          <LendingContainer currency={asset} />
         </Tab>
-        <Tab eventKey="borrow" title="BORROW">
-          <BorrowingContainer currency={currency} />
+        <Tab eventKey={TabType.BORROW} title="BORROW">
+          <BorrowingContainer currency={asset} />
         </Tab>
       </Tabs>
     </div>

@@ -13,7 +13,6 @@ import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import { GlobalStyle } from 'styles/global-styles';
 
 import { NotFoundPage } from './components/NotFoundPage/Loadable';
-// import { LendingPage } from './containers/LendingPage/Loadable';
 import { StatsPage } from './containers/StatsPage/Loadable';
 import { TradingHistoryPage } from './containers/TradingHistoryPage/Loadable';
 import { WalletProvider } from './containers/WalletProvider';
@@ -23,11 +22,36 @@ import LendBorrowSovryn from './containers/LendBorrowSovryn';
 import { TradingPage } from './containers/TradingPage/Loadable';
 import { SandboxPage } from './containers/SandboxPage/Loadable';
 import { FastBtcPage } from './containers/FastBtcPage/Loadable';
+import { EmailPage } from './containers/EmailPage';
+import { useEffect, useState } from 'react';
 
 const title =
   currentNetwork !== 'mainnet' ? `Sovryn ${currentNetwork}` : 'Sovryn';
 
+function getFaviconEl(): HTMLLinkElement {
+  return document.getElementById('favicon') as HTMLLinkElement;
+}
+
 export function App() {
+  const [theme, setTheme] = useState(
+    window.matchMedia &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light',
+  );
+  useEffect(() => {
+    window
+      .matchMedia('(prefers-color-scheme: dark)')
+      .addEventListener('change', e => {
+        setTheme(e.matches ? 'dark' : 'light');
+      });
+  }, []);
+
+  useEffect(() => {
+    // add white favicon for dark mode.
+    getFaviconEl().href = theme === 'dark' ? '/favicon.ico' : '/favicon.ico';
+  }, [theme]);
+
   return (
     <BrowserRouter>
       <Helmet titleTemplate={`%s - ${title}`} defaultTitle={title}>
@@ -42,6 +66,16 @@ export function App() {
           <Route exact path="/stats" component={StatsPage} />
           <Route exact path="/liquidity" component={LiquidityPage} />
           <Route exact path="/sandbox" component={SandboxPage} />
+          <Route
+            exact
+            path="/optin-success"
+            render={props => <EmailPage {...props} type="OPTIN" />}
+          />
+          <Route
+            exact
+            path="/unsubscribe"
+            render={props => <EmailPage {...props} type="UNSUBSCRIBE" />}
+          />
           <Route component={NotFoundPage} />
         </Switch>
       </WalletProvider>
