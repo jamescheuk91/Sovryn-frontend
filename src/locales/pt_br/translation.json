@@ -68,7 +68,9 @@
     "waitingForDeposit": "Aguardando depósito",
     "exchanging": "Nós estamos trocando seu BTC para rBTC.",
     "transfered": "foi transferido para sua carteira RSK",
-    "swapAgain": "Realizar nova troca"
+    "swapAgain": "Realizar nova troca",
+    "copy": "Copy",
+    "copyToClipboard": "Copied to clipboard."
   },
   "tradeOrSwapTabs": {
     "tabs": {

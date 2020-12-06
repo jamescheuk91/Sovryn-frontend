@@ -8,8 +8,10 @@ import React, { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import QRCode from 'qrcode.react';
-import { Icon, Spinner } from '@blueprintjs/core';
+import { Icon, Spinner, Button } from '@blueprintjs/core';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import MiddleEllipsis from 'react-middle-ellipsis';
+import styled from 'styled-components';
 
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
 import { translations } from 'locales/i18n';
@@ -23,6 +25,7 @@ import { useAccount, useIsConnected } from '../../hooks/useAccount';
 import { DummyField } from '../../components/DummyField';
 import { SkeletonRow } from '../../components/Skeleton/SkeletonRow';
 import { weiTo4, weiToFixed } from '../../../utils/blockchain/math-helpers';
+import { toaster } from '../../../utils/toaster';
 import { LinkToExplorer } from '../../components/LinkToExplorer';
 import { TradeButton } from '../../components/TradeButton';
 
@@ -56,6 +59,13 @@ export function FastBtcForm(props: Props) {
     },
     [dispatch],
   );
+  const showToastCopy = () => {
+    toaster.show({
+      intent: 'success',
+      message: t(s.copyToClipboard),
+      timeout: 0,
+    });
+  };
 
   return (
     <>
@@ -88,9 +98,22 @@ export function FastBtcForm(props: Props) {
             {state.depositAddress && (
               <>
                 <FieldGroup label={t(s.depositAdress)}>
-                  <CopyToClipboard text={state.depositAddress}>
-                    <DummyField>{state.depositAddress}</DummyField>
-                  </CopyToClipboard>
+                  <DummyField>
+                    <TextShort>
+                      <MiddleEllipsis>
+                        <span>{state.depositAddress}</span>
+                      </MiddleEllipsis>
+                    </TextShort>
+                    <CopyToClipboard text={state.depositAddress}>
+                      <Button
+                        title={t(s.copy)}
+                        icon="clipboard"
+                        onClick={showToastCopy}
+                        minimal
+                        className="ml-1"
+                      />
+                    </CopyToClipboard>
+                  </DummyField>
                 </FieldGroup>
                 <div className="d-flex justify-content-between mb-4">
                   <span>min: {state.minDepositAmount} BTC</span>
@@ -209,3 +232,8 @@ export function FastBtcForm(props: Props) {
 function satoshiTo4(amount: string | number) {
   return (Number(amount) / 1e8).toFixed(4);
 }
+
+const TextShort = styled.div`
+  white-space: nowrap;
+  width: 100%;
+`;

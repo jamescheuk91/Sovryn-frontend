@@ -68,7 +68,9 @@
     "waitingForDeposit": "Waiting for deposit",
     "exchanging": "We are exchanging to rBTC it now.",
     "transfered": "was transfered to your RSK walllet",
-    "swapAgain": "Swap again"
+    "swapAgain": "Swap again",
+    "copy": "Copy",
+    "copyToClipboard": "Copied to clipboard."
   },
   "tradeOrSwapTabs": {
     "tabs": {
