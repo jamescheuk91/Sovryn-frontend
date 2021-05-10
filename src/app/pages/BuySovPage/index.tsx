@@ -23,6 +23,7 @@ import { Promotions } from './components/Promotions';
 import { Features } from './components/Features';
 import { useTranslation } from 'react-i18next';
 import { translations } from '../../../locales/i18n';
+import { Babelfish } from 'app/containers/Babelfish';
 
 export function BuySovPage() {
   const { t } = useTranslation();
@@ -57,6 +58,7 @@ export function BuySovPage() {
       </Helmet>
       <Header />
       <div className="container mt-5 font-family-montserrat">
+        <Babelfish show={true} onClose={() => {}} />
         <Banner onClick={bannerClick} />
 
         <div ref={ref1} />
