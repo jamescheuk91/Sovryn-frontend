@@ -211,6 +211,7 @@ export function Header() {
         content={content}
         hoverOpenDelay={0}
         hoverCloseDelay={0}
+        position={Position.BOTTOM_LEFT}
       >
         {children}
       </StyledPopover>

@@ -186,6 +186,7 @@
     "connect_btn": "Engage wallet",
     "disconnect": "Disconnect",
     "my_wallet": "My Wallet",
+    "copy_address": "Copy Address",
     "referrals": "Refer a friend",
     "changeWallet": "Change Wallet"
   },
@@ -318,6 +319,7 @@
     "poolSelect": "Select pool",
     "amount": "Enter amount",
     "amountTarget": "Target Amount",
+    "suppliedBalance": "Supplied Balance",
     "token": "Expected pool tokens",
     "fee": "fee",
     "supply": "Supply",
@@ -347,6 +349,7 @@
     "emailSettingsBtn_get": "Get email notifications",
     "dialog": {
       "title": "Email Notifications",
+      "want": "Receive email notifications about margin calls and liquidated positions",
       "form": {
         "name": {
           "label": "Name / Pseudonym",
@@ -811,13 +814,9 @@
     "button": "Repay"
   },
   "closeTradingPositionHandler": {
-    "title": "Liquidate position",
-    "titleDone": "Position liquidated",
-    "positionSize": "Position size",
-    "withdrawIn": "Withdraw in",
-    "returnAmount": "Return amount",
-    "closePosition": "Close Position",
-    "closeAmount": "Close Amount",
+    "title": "Close Position",
+    "withdrawIn": "Asset:",
+    "amountToClose": "Position amount to close:",
     "liquidity": {
       "line_1": "Liquidity is too low for closing position.",
       "line_2": "Try another return asset or wait for arbiters to re-balance."
@@ -831,7 +830,7 @@
       "estimatedLiquidationPrice": "Est. Liquidation Price",
       "gasPriceNote": "Make sure gas price does not exceed 0.06 GWEI",
       "positionEntryPrice": "Approx. Position Entry Price",
-      "entryPriceNote": "The price is taken from our AMM and as such is subject to flunctuations.",
+      "entryPriceNote": "The price is taken from our AMM and as such is subject to fluctuations.",
       "tradeButtonLong": "Place Long",
       "tradeButtonShort": "Place Short",
       "closeBtn": "Close Dialog"
@@ -1102,7 +1101,7 @@
     "earn": "Earning with Sovryn"
   },
   "addToMargin": {
-    "title": "Top Up",
+    "title": "Add to Margin",
     "amount": "Amount to Add:",
     "liquidationPrice": "Liquidation Price:"
   },
@@ -1118,7 +1117,7 @@
     "noData": "No data",
     "cta": {
       "margin": "Add to Margin",
-      "close": "Close Position"
+      "close": "Close"
     }
   },
   "claimOriginBanner": {
