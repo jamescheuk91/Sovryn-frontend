@@ -20,11 +20,12 @@ import { useLiquidityMining_getUserAccumulatedReward } from '../../hooks/useLiqu
 
 interface Props {
   pool: LiquidityPool;
+  successfulTransactions: number;
 }
 
 // todo this needs refactoring to optimize blockchain reads, most of the
 //  calls to the node are also used in some of the child components
-export function UserPoolInfo({ pool }: Props) {
+export function UserPoolInfo({ pool, successfulTransactions }: Props) {
   const account = useAccount();
   const { value: poolData, loading: plnLoading } = useUserPoolData(pool);
 
@@ -159,7 +160,7 @@ export function UserPoolInfo({ pool }: Props) {
         })
         .catch(console.error);
     }
-  }, [account, pool, token1, token2]);
+  }, [account, pool, token1, token2, successfulTransactions]);
 
   const pln = useMemo(() => {
     const pl1 = poolData.data.find(item => item.asset === token1.asset);
